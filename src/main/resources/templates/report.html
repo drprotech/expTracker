@@ -15,9 +15,13 @@
 <!-- Ionicons -->
 <link rel="stylesheet"
 	href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"></link>
+
+
 <!-- DataTables -->
-<link rel="stylesheet"
-	href="plugins/datatables/dataTables.bootstrap.css"></link>
+<!-- <link rel="stylesheet" -->
+<!-- 	href="plugins/datatables/dataTables.bootstrap.css"></link> -->
+
+
 <!-- Theme style -->
 <link rel="stylesheet" href="dist/css/AdminLTE.min.css"></link>
 <!-- AdminLTE Skins. Choose a skin from the css/skins
@@ -27,12 +31,14 @@
 <link rel="stylesheet" href="dist/css/skins/skin-red-light.min.css"></link>
 
 <link rel="stylesheet" href="plugins/datepicker/datepicker3.css"></link>
+<link rel="stylesheet" href="https://unpkg.com/ng-table@2.0.2/bundles/ng-table.min.css"/>
+
 
 <script data-require="angular.js@*" data-semver="1.3.0-beta.14"
 	src="http://code.angularjs.org/1.3.0-beta.14/angular.js"></script>
 <script data-require="angular-animate@*" data-semver="1.3.0-beta.14"
 	src="http://code.angularjs.org/1.3.0-beta.14/angular-animate.js"></script>
-<script type="text/javascript" src="./js/app1.js"></script>
+<script type="text/javascript" src="./js/app_report.js"></script>
 
 </head>
 <body class="hold-transition skin-red-light sidebar-mini">
@@ -216,41 +222,43 @@
 							</div>
 							<!-- /.box-header -->
 							<div class="box-body">
-								<table id="example1"
-									class="table table-bordered table-striped header-fixed">
-									<thead>
-										<tr id="tableft1">
-
+<!-- 								<table id="example1" -->
+<!-- 									class="table table-bordered table-striped header-fixed"> -->
+<table ng-table="tableParams" class="table" show-filter="true">
+<!-- 									<thead> -->
+<!--										<tr>
 											<th>Date</th>
 											<th>Spent By</th>
 											<th>Amount</th>
 											<th>Where</th>
 											<th>Division</th>
-										</tr>
+										</tr> -->
 
-									</thead>
+<!-- 									</thead> -->
 
-									<tbody>
+<!-- 									<tbody> -->
 										<tr id="tablehd1" ng-model="expdata"
 											ng-repeat="expense in expenses ">
-											<td>{{expense.date | date:'longDate'}}</td>
-											<td>{{expense.spentBy}}</td>
-											<td>{{expense.amount}}</td>
-											<td>{{expense.place}}</td>
-											<td>{{expense.spread}}</td>
+											<td title="'date'" filter="{ date: 'text'}" sortable="'date'">{{expense.date | date:'longDate'}}</td>
+											<td title="'spentBy'" filter="{ spentBy: 'text'}" sortable="'spentBy'">{{expense.spentBy}}</td>
+											<td title="'amount'" filter="{ amount: 'text'}" sortable="'amount'">{{expense.amount}}</td>
+											<td title="'place'" filter="{ place: 'text'}" sortable="'place'">{{expense.place}}</td>
+											<td title="'spread'" filter="{ spread: 'text'}" sortable="'spread'">{{expense.spread}}</td>
 										</tr>
-										<tr ng-show="!expenses.length">
-											<td colspan="5" align="center">No Data Found</td>
-										</tr>
-									</tbody>
+<!-- 										<tr ng-show="!expenses.length"> -->
+<!-- 											<td colspan="5" align="center">No Data Found</td> -->
+<!-- 										</tr> -->
+<!-- 									</tbody> -->
 
-									<tfoot>
-										<tr>
-											<!-- 												<td>Total</td> -->
-											<!-- 												<td id="mySum"></td> -->
-										</tr>
-
-									</tfoot>
+<!-- 									<tfoot> -->
+<!-- 											<tr> -->
+<!-- 											<th>Date</th> -->
+<!-- 											<th>Spent By</th> -->
+<!-- 											<th>Amount</th> -->
+<!-- 											<th>Where</th> -->
+<!-- 											<th>Division</th> -->
+<!-- 										</tr> -->
+<!-- 									</tfoot> -->
 								</table>
 							</div>
 							<!-- /.box-body -->
@@ -275,9 +283,15 @@
 	<script src="plugins/jQuery/jQuery-2.2.0.min.js"></script>
 	<!-- Bootstrap 3.3.5 -->
 	<script src="js/bootstrap.min.js"></script>
+	
 	<!-- DataTables -->
-	<script src="plugins/datatables/jquery.dataTables.min.js"></script>
-	<script src="plugins/datatables/dataTables.bootstrap.min.js"></script>
+<!-- 	<script src="plugins/datatables/jquery.dataTables.min.js"></script> -->
+<!-- 	<script src="plugins/datatables/dataTables.bootstrap.min.js"></script> -->
+	
+	
+	
+	
+	
 	<!-- SlimScroll -->
 	<script src="plugins/slimScroll/jquery.slimscroll.min.js"></script>
 	<!-- FastClick -->
@@ -305,6 +319,8 @@
 		src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/js/bootstrap-datetimepicker.min.js"></script>
 
 
+<script src="https://unpkg.com/ng-table@2.0.2/bundles/ng-table.min.js"></script>
+
 	<script type="text/javascript">
 		// 		var date_input = $('input[name="date"]'); //our date input has the name "date"
 		// 		var container = $('.bootstrap-iso form').length > 0 ? $(
@@ -318,6 +334,11 @@
 		// 			minViewMode : "months",
 		// 			ignoreReadonly: true,
 		// 		})
+
+// $(document).ready(function() {
+//     $('#example1').DataTable();
+// } );
+
 
 		$('#datetimepicker').datetimepicker({
 			format : 'MM-YYYY',

@@ -21,4 +21,7 @@ public interface PersonRepository extends CrudRepository<Person, Integer>{
 	
 	@Query("select u from #{#entityName} u")
 	List<Person> findAll();
+	
+
+	List<Person> findByemail(@Param("email") String email);
 }

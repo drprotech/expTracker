@@ -1,10 +1,7 @@
-var taskManagerModule = angular.module('expTrackerApp', ['ngAnimate']);
-
-//var app = angular.module('app', ['ngSanitize']);
+var taskManagerModule = angular.module('expTrackerApp', ['ngAnimate','ngTable']);
 
 
-
-taskManagerModule.controller('expTrackerController', function ($scope,$http) {
+taskManagerModule.controller('expTrackerController', function ($scope,$http, NgTableParams) {
 	$scope.datetest = document.getElementById("date").value;
 	var label = "";
 	var data = [];
@@ -45,6 +42,7 @@ taskManagerModule.controller('expTrackerController', function ($scope,$http) {
 	$scope.sel ="";
 	$scope.color = ["#f56954","#00a65a","#f39c12","#00c0ef","#3c8dbc","#d2d6de"]
 	$scope.total = 0;
+	$scope.tableParams;
 
 //	function findAllTasks() {
 //	//get all tasks and display initially
@@ -144,7 +142,7 @@ taskManagerModule.controller('expTrackerController', function ($scope,$http) {
 		});
 //		console.log(tbData);
 
-
+		$scope.tableParams = new NgTableParams({}, { dataset: $scope.expdata});
 
 		$scope.sel = name;
 	};
@@ -494,7 +492,6 @@ taskManagerModule.controller('expTrackerController', function ($scope,$http) {
 						else
 						{
 							a = [ {text : $scope.name[maxpos]+" to "+$scope.name[minpos]+ " Amount $",
-								//Nitin commented on 19 Dec
 								//amount : (parseFloat(max).toFixed(2)) ,
 								amount : Math.abs((parseFloat(min).toFixed(2))) ,
 								perc : (min)/int_max*100 }
