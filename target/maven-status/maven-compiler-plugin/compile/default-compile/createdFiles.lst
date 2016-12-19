@@ -1,9 +1,0 @@
-com\exptracker\repositories\ExpenseRepository.class
-com\exptracker\entity\Expense.class
-com\exptracker\config\MVCConfig.class
-com\exptracker\ExptrackerApplication.class
-com\exptracker\entity\Person.class
-com\exptracker\ServletInitializer.class
-com\exptracker\entity\Spent.class
-com\exptracker\repositories\PersonRepository.class
-com\exptracker\repositories\SpentRepository.class
