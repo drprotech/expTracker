@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html ng-app="expTrackerApp">
+<head>
+<meta charset="utf-8"></meta>
+<title>expTracker</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
+<meta
+	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+	name="viewport"></meta>
+<!-- Bootstrap 3.3.5 -->
+<link rel="stylesheet" href="css/bootstrap.min.css"></link>
+
+<!-- Font Awesome -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"></link>
+<!-- Ionicons -->
+<link rel="stylesheet"
+	href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"></link>
+<!-- DataTables -->
+<link rel="stylesheet"
+	href="plugins/datatables/dataTables.bootstrap.css"></link>
+<!-- Theme style -->
+<link rel="stylesheet" href="dist/css/AdminLTE.min.css"></link>
+<!-- AdminLTE Skins. Choose a skin from the css/skins
+          folder instead of downloading all of them to reduce the load. -->
+<!--  <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css"> -->
+<link rel="stylesheet" href="dist/css/skins/skin-red-light.css"></link>
+<link rel="stylesheet" href="dist/css/skins/skin-red-light.min.css"></link>
+<link rel="stylesheet" href="plugins/datepicker/datepicker3.css"></link>
+<script data-require="angular.js@*" data-semver="1.3.0-beta.14"
+	src="http://code.angularjs.org/1.3.0-beta.14/angular.js"></script>
+<script data-require="angular-animate@*" data-semver="1.3.0-beta.14"
+	src="http://code.angularjs.org/1.3.0-beta.14/angular-animate.js"></script>
+<script type="text/javascript" src="./js/app.js"></script>
+<style>
+#overlay {
+	background: #e6f2ff;
+	color: #666666;
+	position: fixed;
+	height: 100%;
+	width: 100%;
+	z-index: 5000;
+	top: 0;
+	left: 0;
+	float: left;
+	text-align: center;
+	padding-top: 0%;
+}
+</style>
+</head>
+<body class="hold-transition skin-red-light sidebar-mini">
+
+	<div id="overlay">
+		<img src="img/loader.gif" alt="Loading" /><br />
+	</div>
+
+	<div ng-controller="expTrackerController">
+		<div class="wrapper">
+
+			<header class="main-header">
+				<!-- Logo -->
+				<a th:href="@{/home}" class="logo"> <!-- mini logo for sidebar mini 50x50 pixels -->
+					<span class="logo-mini"><b>ET</b></span> <!-- logo for regular state and mobile devices -->
+					<span class="logo-lg"><b>Expense</b> Tracker</span>
+				</a>
+				<!-- Header Navbar: style can be found in header.less -->
+				<nav class="navbar navbar-static-top" role="navigation">
+					<!-- Sidebar toggle button-->
+					<a id="sidebtn" href="#" class="sidebar-toggle"
+						data-toggle="offcanvas" role="button"> <span class="sr-only">Toggle
+							navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</a>
+					<p style="font-size: 200%; vertical-align: middle;">Add Expense</p>
+
+					<div class="navbar-custom-menu"></div>
+				</nav>
+			</header>
+			<!-- Left side column. contains the logo and sidebar -->
+			<aside class="main-sidebar">
+				<!-- sidebar: style can be found in sidebar.less -->
+<!-- 				<section class="sidebar"> -->
+<!-- 					<div class="user-panel" style="height: 50px;"> -->
+
+<!-- 						<div class="pull-left info"> -->
+<!-- 							<p>Nitin Shukla</p> -->
+<!-- 							<a href="#"><i class="fa fa-circle text-success"></i> Online</a> -->
+<!-- 						</div> -->
+<!-- 					</div> -->
+<!-- 				</section> -->
+
+				<!-- sidebar menu: : style can be found in sidebar.less -->
+				<ul class="sidebar-menu">
+					<li class="active treeview"><a href="#"> <i
+							class="fa fa-dashboard"></i> <span>Menu</span> <i
+							class="fa fa-angle-left pull-right"></i>
+					</a>
+						<ul class="treeview-menu">
+							<li class="active"><a th:href="@{/}"><i
+									class="fa fa-circle-o"></i>Enter Data</a></li>
+							<li><a th:href="@{/report}"><i class="fa fa-circle-o"></i>Report</a></li>
+						</ul></li>
+				</ul>
+			</aside>
+			<!-- Content Wrapper. Contains page content -->
+			<div class="content-wrapper">
+				<section class="content">
+					<form name="userForm" ng-submit="submitForm()">
+
+
+
+						<div class="row">
+							<div class="col-xs-12">
+								<div class="box" style="height: auto">
+									<div class="box-body">
+										<div class="row">
+											<div class="col-md-6">
+<!-- 												<div class="form-group"> -->
+<!-- 												<label>Date</label> -->
+<!-- 												<div class="input-group"> -->
+<!-- 													<div class="input-group-addon"> -->
+<!-- 														<i class="fa fa-calendar"> </i> -->
+<!-- 													</div> -->
+<!-- 													<input class="form-control pull-right" id="date" name="date" -->
+<!-- 														placeholder="MM-DD-YYYY" type="text" ng-model="date" -->
+<!-- 														required="required" data-date-end-date="0d" readonly="true"> -->
+<!-- 												</div> -->
+<!-- 												</div> -->
+<!-- Nitin updated with moment.js datepicker -->
+<div class="form-group">
+          <div class='input-group date' id='datetimepicker'>
+            <input type='text' id="date" class="form-control" placeholder="MM-DD-YYYY" required="required" readonly="true" />
+            <span class="input-group-addon">
+              <span class="glyphicon glyphicon-calendar"></span>
+            </span>
+          </div>
+        </div>
+
+
+												<label>Spent By</label> <select ng-model="name.selection"
+													id="personselect" class="form-control select2"
+													style="width: 100%;" ng-click="findExpPerson()" required="">
+													<option></option>
+													<option ng-repeat="person in persons"
+														value="{{person.personName}}" ng-selected="$first">
+														{{person.personName}}</option>
+
+												</select> <label>Amount</label> <input type="text"
+													class="form-control" ng-model="user.amount" required=""></input>
+
+												<label>Where</label> <select id="sel" ng-model="user.where"
+													class="form-control select2" style="width: 100%;"
+													required="" onclick="checkOther()" onchange="checkOther()">
+													<option ng-repeat="option in where.availableOptions"
+														value="{{option.id}}"
+														ng-selected="{{option.id == 'Rent'}}">{{option.name}}</option>
+												</select> <label>Other</label> <input id="othbox" type="text"
+													class="form-control" disabled="true"></input>
+											</div>
+
+											<div class="col-md-6" ng-repeat="person in persons">
+
+												<label>{{person.personName}}</label> <select
+													id="division{{person.personName}}"
+													class="form-control select2" style="width: 100%;"
+													required="">
+													<option ng-repeat="option in data.availableOptions"
+														value="{{option.id}}" ng-selected="{{option.id == 1}}">{{option.name}}</option>
+												</select>
+											</div>
+
+
+										</div>
+
+										<p></p>
+										<div class="row">
+											<div class="col-md-12">
+												<button id="messagebtn" type="submit"
+													class="btn btn-block btn-info btn-lg">Add</button>
+											</div>
+										</div>
+									</div>
+								</div>
+
+							</div>
+
+							<!-- <div class="col-xs-6">
+      <div class="box">
+       <div class="box-body">
+       </div>
+       </div>
+       </div> -->
+
+						</div>
+					</form>
+					<div class="row" id="banner">
+						<div class="col-xs-12">
+							<div class="box">
+								<div class="box-header">
+									<h3 class="box-title">Your Recent transactions</h3>
+								</div>
+								<!-- /.box-header -->
+								<div class="box-body">
+									<table id="example1"
+										class="table table-bordered table-striped header-fixed">
+										<thead>
+											<tr id="tableft1">
+												<th><a href="" ng-click="order('Date')">Date</a></th>
+												<!-- 												<th>Date</th> -->
+												<th>Spent By</th>
+												<th>Amount</th>
+												<th>Where</th>
+
+											</tr>
+
+										</thead>
+
+										<tbody style="overflow-y: scroll; height: 100px;">
+											<tr id="tablehd1" ng-model="expdata"
+												ng-repeat="expense in expenses ">
+												<td>{{expense.date | date:'longDate'}}</td>
+												<td>{{expense.spentBy}}</td>
+												<td>{{expense.amount}}</td>
+												<td>{{expense.place}}</td>
+											</tr>
+											<tr ng-show="!expenses.length">
+												<td colspan="4" align="center">No Data Found</td>
+											</tr>
+										</tbody>
+
+										<tfoot>
+											<tr>
+												<!-- 												<td>Total</td> -->
+												<!-- 												<td id="mySum"></td> -->
+											</tr>
+
+										</tfoot>
+									</table>
+								</div>
+								<!-- /.box-body -->
+							</div>
+							<!-- /.box -->
+						</div>
+					</div>
+
+				</section>
+			</div>
+
+			<!--footer -->
+			<footer class="main-footer">
+				<div class="pull-right hidden-xs">
+					<b>Version</b> 1.0
+				</div>
+				<strong>Copyright &copy; 2016-2017 <a href="">Nitin
+						Shukla</a>.
+				</strong> All rights reserved.
+			</footer>
+
+		</div>
+		<!-- ./wrapper -->
+		<!-- jQuery 2.2.0 -->
+		<script src="plugins/jQuery/jQuery-2.2.0.min.js"></script>
+		<!-- Bootstrap 3.3.5 -->
+		<script src="js/bootstrap.min.js"></script>
+		<!-- DataTables -->
+		<script src="plugins/datatables/jquery.dataTables.min.js"></script>
+		<script src="plugins/datatables/dataTables.bootstrap.min.js"></script>
+		<!-- SlimScroll -->
+		<script src="plugins/slimScroll/jquery.slimscroll.min.js"></script>
+		<!-- FastClick -->
+		<script src="plugins/fastclick/fastclick.js"></script>
+
+		<!-- AdminLTE App -->
+		<script src="dist/js/app.min.js"></script>
+
+<!-- 		<script src="plugins/datepicker/bootstrap-datepicker.js"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/js/bootstrap-datetimepicker.min.js"></script>
+		<script type="text/javascript">
+ 
+ 
+ 
+ window.onresize = function(event) {
+     if(event.currentTarget.outerWidth >= 1024){
+         //console.info("showing");
+         $("#banner").show();
+     }else{
+         //console.info("hiding");
+         $("#banner").hide();
+
+         //$("#banner").height()
+     }
+     
+ }
+ 
+
+ 
+//  var date_input=$('input[name="date"]'); //our date input has the name "date"
+// 	var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+// 	date_input.datepicker({
+// 		format: 'mm-dd-yyyy',
+// 		container: container,
+// 		todayHighlight: true,
+// 		autoclose: true,
+// 		disableTouchKeyboard : true,
+// 		ignoreReadonly: true,
+// 	})
+	 $('#datetimepicker').datetimepicker({
+	 		format: 'MM-DD-YYYY',
+	 		maxDate : 'now',
+	 		ignoreReadonly: true
+	 })
+	 ;
+	 
+	 
+	 
+function checkOther()
+	{
+		if(document.getElementById("sel").value == "Other")
+			document.getElementById("othbox").disabled = false;
+		else
+			document.getElementById("othbox").disabled = true;
+	}
+	
+</script>
+
+		<script type="text/javascript">
+      $(function () {
+    	  
+    	  if($(window).width() >= 1024){
+    		   $("#banner").show();
+    		   $("#sidebtn").trigger("click");
+    	}
+    	  else
+    		{
+    		  $("#banner").hide();
+    		}
+    	 
+    	  //$("#sidebtn").trigger("click");
+    	  $('#overlay').fadeOut();
+    	  
+    	  $("#date").keypress(function (e) {
+    		    return false;
+    		  });
+    		  $("#date").keydown(function (e) {
+    		    return false;
+    		  });
+    	  
+    	  
+    	  
+      });
+
+    </script>
+	</div>
+
+</body>
+
+</html>
