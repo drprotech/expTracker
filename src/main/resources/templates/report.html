@@ -38,7 +38,36 @@
 	src="http://code.angularjs.org/1.3.0-beta.14/angular.js"></script>
 <script data-require="angular-animate@*" data-semver="1.3.0-beta.14"
 	src="http://code.angularjs.org/1.3.0-beta.14/angular-animate.js"></script>
-<script type="text/javascript" src="./js/app_report.js"></script>
+<script type="text/javascript" src="js/app_report.js"></script>
+
+
+<link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css"/>
+<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+<style>
+th {
+    border-bottom: 1px solid #d6d6d6;
+}
+
+tr:nth-child(even) {
+    background: #e9e9e9;
+}
+
+table {
+font-size:	2.3vh;
+}
+
+pieChart {
+max-width : .5vh
+max-height : .5vh
+}
+
+graph-container {
+max-width : .5vh
+max-height : .5vh
+
+}
+</style>
 
 </head>
 <body class="hold-transition skin-red-light sidebar-mini">
@@ -109,7 +138,7 @@
 								<input class="form-control" type='text' id="date" name="date"
 									placeholder="MM-YYYY" required="required" readonly="true" /> <span
 									class="input-group-addon"> <span
-									class="glyphicon glyphicon-calendar"></span>
+									class="glyphicon glyphicon-calendar" style="width : 2.5vh "></span>
 								</span>
 							</div>
 						</div>
@@ -221,46 +250,39 @@
 								</div>
 							</div>
 							<!-- /.box-header -->
-							<div class="box-body">
-<!-- 								<table id="example1" -->
-<!-- 									class="table table-bordered table-striped header-fixed"> -->
-<table ng-table="tableParams" class="table" show-filter="true">
-<!-- 									<thead> -->
-<!--										<tr>
-											<th>Date</th>
-											<th>Spent By</th>
-											<th>Amount</th>
-											<th>Where</th>
-											<th>Division</th>
-										</tr> -->
-
-<!-- 									</thead> -->
-
-<!-- 									<tbody> -->
-										<tr id="tablehd1" ng-model="expdata"
-											ng-repeat="expense in expenses ">
-											<td title="'date'" filter="{ date: 'text'}" sortable="'date'">{{expense.date | date:'longDate'}}</td>
-											<td title="'spentBy'" filter="{ spentBy: 'text'}" sortable="'spentBy'">{{expense.spentBy}}</td>
-											<td title="'amount'" filter="{ amount: 'text'}" sortable="'amount'">{{expense.amount}}</td>
-											<td title="'place'" filter="{ place: 'text'}" sortable="'place'">{{expense.place}}</td>
-											<td title="'spread'" filter="{ spread: 'text'}" sortable="'spread'">{{expense.spread}}</td>
+<!-- 							<div class="box-body"> -->
+							
+<div data-role="main" class="ui-content">
+    <form>
+      <input id="filterTable-input" data-type="search" placeholder="Search For Columns..."/>
+    </form>
+    <table data-role="table" data-mode="columntoggle" class="ui-responsive ui-shadow" id="myTable" data-filter="true" data-input="#filterTable-input">
+    <thead>
+        <tr>
+          <th data-priority="5">Date</th>
+          <th data-priority="1">Spent By</th>
+          <th data-priority="2">Amount</th>
+          <th data-priority="3">Place</th>
+          <th data-priority="4">Spread</th>
+        </tr>
+      </thead>
+      <tbody>
+										<tr ng-model="expdata"
+											ng-repeat="expense in expdata">
+											<td>{{expense.date}}</td>
+											<td>{{expense.spentBy}}</td>
+											<td class="rowDataSd">{{expense.amount}}</td>
+											<td>{{expense.place}}</td>
+											<td>{{expense.spread}}</td>
 										</tr>
-<!-- 										<tr ng-show="!expenses.length"> -->
-<!-- 											<td colspan="5" align="center">No Data Found</td> -->
-<!-- 										</tr> -->
-<!-- 									</tbody> -->
-
-<!-- 									<tfoot> -->
-<!-- 											<tr> -->
-<!-- 											<th>Date</th> -->
-<!-- 											<th>Spent By</th> -->
-<!-- 											<th>Amount</th> -->
-<!-- 											<th>Where</th> -->
-<!-- 											<th>Division</th> -->
-<!-- 										</tr> -->
-<!-- 									</tfoot> -->
+										</tbody>
+										<tr>
+										<td id="result"></td>
+										</tr>
 								</table>
-							</div>
+								</div>
+
+<!-- 							</div> -->
 							<!-- /.box-body -->
 						</div>
 						<!-- /.box -->
@@ -319,7 +341,6 @@
 		src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/js/bootstrap-datetimepicker.min.js"></script>
 
 
-<script src="https://unpkg.com/ng-table@2.0.2/bundles/ng-table.min.js"></script>
 
 	<script type="text/javascript">
 		// 		var date_input = $('input[name="date"]'); //our date input has the name "date"
@@ -335,9 +356,21 @@
 		// 			ignoreReadonly: true,
 		// 		})
 
-// $(document).ready(function() {
-//     $('#example1').DataTable();
-// } );
+var totals=[0,0,0];
+$(document).ready(function(){
+
+    var $dataRows=$("#myTable tr:not('.totalColumn, .titlerow')");
+    
+    $dataRows.each(function() {
+        $(this).find('.rowDataSd').each(function(i){        
+            totals[i]+=parseInt( $(this).html());
+        });
+    });
+    $("#sum_table td.totalCol").each(function(i){  
+        $(this).html("total:"+totals[i]);
+    });
+
+});
 
 
 		$('#datetimepicker').datetimepicker({
@@ -346,7 +379,7 @@
 			viewMode : 'months',
 			ignoreReadonly : true
 		});
-
+		
 		$(function() {
 
 			if ($(window).width() >= 1024) {

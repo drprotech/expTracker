@@ -30,7 +30,7 @@ public interface ExpenseRepository extends CrudRepository<Expense, Integer>{
 //			+ "and month(STR_TO_DATE(u.date,'%m-%d-%Y') ) = month(STR_TO_DATE(:month,'%m-%Y')) order by "
 //			+ "STR_TO_DATE(u.date,'%m-%d-%Y') desc", nativeQuery = true)
 
-	@Query(value = "select u.*,CONCAT('Anoop :$',d.Anoop,', Jacob :$',d.Jacob,', Nitin :$',d.Nitin,', Sourabh :$',d.Sourabh,', Anil :$',d.Anil) spread from db_expenses u ,"
+	@Query(value = "select u.*,CONCAT('Anoop', (CASE WHEN d.Anoop = 0.00 THEN CONCAT('(N) : $',d.Anoop) else CONCAT('(Y) : $',d.Anoop) END), ', Jacob', (CASE WHEN d.Jacob = 0.00 THEN CONCAT('(N) : $',d.Jacob) else CONCAT('(Y) : $',d.Jacob) END), ', Nitin', (CASE WHEN d.Nitin = 0.00 THEN CONCAT('(N) : $',d.Nitin) else CONCAT('(Y) : $',d.Nitin) END), ', Sourabh', (CASE WHEN d.Sourabh = 0.00 THEN CONCAT('(N) : $',d.Sourabh) else CONCAT('(Y) : $',d.Sourabh) END), ', Anil', (CASE WHEN d.Anil = 0.00 THEN CONCAT('(N) : $',d.Anil) else CONCAT('(Y) : $',d.Anil) END)) spread from db_expenses u ,"
 			+" (select a.id refid,max(Anoop) Anoop,max(Jacob) Jacob,max(Nitin) Nitin,max(Sourabh) Sourabh,max(Anil) Anil from"
 			+" (select dv.id,"
 			+" (CASE WHEN dv.person_id = 1 THEN dv.amount else 0 END) Anoop,"
@@ -54,10 +54,10 @@ public interface ExpenseRepository extends CrudRepository<Expense, Integer>{
 	List<Expense> findSpent(@Param("month") String month);
 	
 	
-	@Query(value = "select u.* from db_expenses u where u.spentby = :spentby "
-			+ "and year(STR_TO_DATE(u.date,'%m-%d-%Y') ) = year(now()) "
-			+ "and month(STR_TO_DATE(u.date,'%m-%d-%Y') ) = month(now()) order by "
-			+ "STR_TO_DATE(u.date,'%m-%d-%Y') desc", nativeQuery = true)
+	@Query(value = "select u.*, 0 as spread from db_expenses u where u.spentby = :spentby "
+			//+ "and year(STR_TO_DATE(u.date,'%m-%d-%Y') ) = year(now()) "
+			//+ "and month(STR_TO_DATE(u.date,'%m-%d-%Y') ) = month(now()) order by "
+			+ " order by STR_TO_DATE(u.date,'%m-%d-%Y') desc LIMIT 10", nativeQuery = true)
 	List<Expense> findBySpentBy(@Param("spentby") String spentBy);
 //	
 //	@Modifying
